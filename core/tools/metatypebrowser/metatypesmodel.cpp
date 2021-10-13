@@ -75,15 +75,20 @@ QVariant MetaTypesModel::data(const QModelIndex &index, int role) const
         #define F(x) if (flags & QMetaType:: x) l.push_back(QStringLiteral(#x))
             F(NeedsConstruction);
             F(NeedsDestruction);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            F(RelocatableType);
+            F(IsConst);
+            F(IsQmlList);
+            F(IsUnsignedEnumeration);
+#else
             F(MovableType);
+            F(WasDeclaredAsMetaType);
+#endif
             F(PointerToQObject);
             F(IsEnumeration);
             F(SharedPointerToQObject);
             F(WeakPointerToQObject);
             F(TrackingPointerToQObject);
-#ifndef GAMMARAY_QT6_TODO
-            F(WasDeclaredAsMetaType);
-#endif
             F(IsGadget);
         #undef F
 
