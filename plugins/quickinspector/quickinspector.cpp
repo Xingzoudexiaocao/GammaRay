@@ -974,13 +974,15 @@ void QuickInspector::registerMetaTypes()
 #ifndef QT_NO_OPENGL
     MO_ADD_PROPERTY(QQuickWindow, isPersistentOpenGLContext, setPersistentOpenGLContext);
 #endif
-    MO_ADD_PROPERTY(QQuickWindow, isPersistentSceneGraph, setPersistentSceneGraph);
     MO_ADD_PROPERTY_RO(QQuickWindow, mouseGrabberItem);
 #ifndef QT_NO_OPENGL
     MO_ADD_PROPERTY_RO(QQuickWindow, openglContext);
 #endif
     MO_ADD_PROPERTY_RO(QQuickWindow, renderTargetId);
 #endif
+
+    MO_ADD_PROPERTY(QQuickWindow, isPersistentSceneGraph, setPersistentSceneGraph);
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
     MO_ADD_PROPERTY_RO(QQuickWindow, rendererInterface);
 
