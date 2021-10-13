@@ -968,7 +968,10 @@ void QuickInspector::registerMetaTypes()
 {
     MetaObject *mo = nullptr;
     MO_ADD_METAOBJECT1(QQuickWindow, QWindow);
-#ifndef GAMMARAY_QT6_TODO
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    MO_ADD_PROPERTY(QQuickWindow, renderTarget, setRenderTarget);
+#else
     MO_ADD_PROPERTY(QQuickWindow, clearBeforeRendering, setClearBeforeRendering);
     MO_ADD_PROPERTY_RO(QQuickWindow, mouseGrabberItem);
     MO_ADD_PROPERTY_RO(QQuickWindow, renderTargetId);
