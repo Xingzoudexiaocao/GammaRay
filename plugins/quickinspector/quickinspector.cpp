@@ -971,9 +971,10 @@ void QuickInspector::registerMetaTypes()
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     MO_ADD_PROPERTY(QQuickWindow, renderTarget, setRenderTarget);
+    MO_ADD_PROPERTY(QQuickWindow, graphicsConfiguration, setGraphicsConfiguration);
+    MO_ADD_PROPERTY(QQuickWindow, graphicsDevice, setGraphicsDevice);
 #else
     MO_ADD_PROPERTY(QQuickWindow, clearBeforeRendering, setClearBeforeRendering);
-    MO_ADD_PROPERTY_RO(QQuickWindow, mouseGrabberItem);
     MO_ADD_PROPERTY_RO(QQuickWindow, renderTargetId);
 #endif
 
@@ -986,6 +987,7 @@ void QuickInspector::registerMetaTypes()
     #endif
 #endif
 
+    MO_ADD_PROPERTY_RO(QQuickWindow, mouseGrabberItem);
     MO_ADD_PROPERTY(QQuickWindow, isPersistentSceneGraph, setPersistentSceneGraph);
     MO_ADD_PROPERTY_RO(QQuickWindow, effectiveDevicePixelRatio);
 
