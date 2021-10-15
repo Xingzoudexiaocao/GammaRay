@@ -53,7 +53,7 @@ QmlContextPropertyAdaptor::~QmlContextPropertyAdaptor() = default;
 
 int QmlContextPropertyAdaptor::count() const
 {
-    return m_contextPropertyNames.size();
+    return (int) m_contextPropertyNames.size();
 }
 
 PropertyData QmlContextPropertyAdaptor::propertyData(int index) const
@@ -114,7 +114,22 @@ void QmlContextPropertyAdaptor::doSetObject(const ObjectInstance &oi)
         ++e;
     }
 #else
-    Q_UNUSED(oi)
+    auto context = qobject_cast<QQmlContext *>(oi.qtObject());
+    Q_ASSERT(context);
+    auto contextData = QQmlContextData::get(context);
+    Q_ASSERT(contextData);
+    auto priv = contextData->asQQmlContextPrivate();
+    Q_ASSERT(priv);
+
+    const int numProps = priv->numPropertyValues();
+
+    for (int i = 0; i < numProps; ++i) {
+        auto prop = contextData->propertyName(i);
+        if (!prop.isEmpty()) {
+            m_contextPropertyNames.push_back(prop);
+        }
+    }
+
 #endif
 }
 
