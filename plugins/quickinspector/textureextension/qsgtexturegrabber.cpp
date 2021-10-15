@@ -40,6 +40,7 @@
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 #include <QQuickOpenGLUtils>
+#include <QOpenGLVersionFunctionsFactory>
 #endif
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
@@ -171,7 +172,8 @@ QImage QSGTextureGrabber::grabTexture(QOpenGLContext *context, int textureId) co
         // check if the size matches our expectations (requires ES3.1, so we might have to skip this
         auto glExtraFuncs = context->extraFunctions();
         if (glExtraFuncs) {
-            int w = 0, h = 0;
+            int w = 0;
+            int h = 0;
             glExtraFuncs->glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);
             glExtraFuncs->glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);
             if (m_textureSize.width() != w || m_textureSize.height() != h) {
@@ -197,8 +199,11 @@ QImage QSGTextureGrabber::grabTexture(QOpenGLContext *context, int textureId) co
         return img;
     } else {
 #if !defined(QT_NO_OPENGL) && !defined(QT_OPENGL_ES_2)
-#ifndef GAMMARAY_QT6_TODO
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        auto glFuncs = QOpenGLVersionFunctionsFactory::get<QOpenGLFunctions_2_0>(context);
+#else
         auto glFuncs = context->versionFunctions<QOpenGLFunctions_2_0>();
+#endif
         if (!glFuncs) {
             qWarning() << "unable to obtain OpenGL2 functions, too old GL version?";
             return QImage();
@@ -214,7 +219,8 @@ QImage QSGTextureGrabber::grabTexture(QOpenGLContext *context, int textureId) co
         }
 
         // check if the size matches our expectations
-        int w = 0, h = 0;
+        int w = 0;
+        int h = 0;
         glFuncs->glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &w);
         glFuncs->glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &h);
         if (m_textureSize.width() != w || m_textureSize.height() != h) {
@@ -226,7 +232,6 @@ QImage QSGTextureGrabber::grabTexture(QOpenGLContext *context, int textureId) co
         QImage img(m_textureSize.width(), m_textureSize.height(), QImage::Format_ARGB32_Premultiplied);
         glFuncs->glGetTexImage(GL_TEXTURE_2D, 0, GL_BGRA, GL_UNSIGNED_BYTE, img.bits());
         return img;
-#endif
 #endif
     }
     return QImage();
