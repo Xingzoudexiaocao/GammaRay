@@ -1134,8 +1134,8 @@ static const MetaEnum::Value<QSGRendererInterface::GraphicsApi> qsg_graphics_api
     E(Unknown),
     E(Software),
     E(OpenGL),
-#ifndef GAMMARAY_QT6_TODO
-    E(Direct3D12),
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    E(Direct3D12), // Should just remove this? See QTBUG-79925
 #endif
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     E(OpenVG)
