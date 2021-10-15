@@ -38,6 +38,10 @@
 #include <QSGTexture>
 #include <QThread>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <QQuickOpenGLUtils>
+#endif
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)
 #include <QOpenGLExtraFunctions>
 #endif
@@ -141,7 +145,9 @@ void QSGTextureGrabber::windowAfterRendering(QQuickWindow *window)
         resetRequest();
     }
 
-#ifndef GAMMARAY_QT6_TODO
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QQuickOpenGLUtils::resetOpenGLState();
+#else
     window->resetOpenGLState();
 #endif
 }
