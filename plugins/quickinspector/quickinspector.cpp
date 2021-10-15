@@ -98,8 +98,8 @@
 #include <QSGRenderNode>
 #include <QSGRendererInterface>
 #ifndef QT_NO_OPENGL
-#ifndef GAMMARAY_QT6_TODO
-#include <private/qquickopenglshadereffectnode_p.h>
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+  #include <private/qquickopenglshadereffectnode_p.h>
 #endif
 #endif
 #include <private/qsgsoftwarecontext_p.h>
@@ -1116,14 +1116,12 @@ void QuickInspector::registerMetaTypes()
     MO_ADD_METAOBJECT1(QSGDistanceFieldShiftedStyleTextMaterial, QSGDistanceFieldStyledTextMaterial);
     MO_ADD_PROPERTY_RO(QSGDistanceFieldShiftedStyleTextMaterial, shift);
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0)
-#ifndef GAMMARAY_QT6_TODO
+#if QT_VERSION >= QT_VERSION_CHECK(5, 8, 0) && QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     MO_ADD_METAOBJECT1(QQuickOpenGLShaderEffectMaterial, QSGMaterial);
     MO_ADD_PROPERTY_MEM(QQuickOpenGLShaderEffectMaterial, attributes);
     MO_ADD_PROPERTY_MEM(QQuickOpenGLShaderEffectMaterial, cullMode);
     MO_ADD_PROPERTY_MEM(QQuickOpenGLShaderEffectMaterial, geometryUsesTextureSubRect);
     MO_ADD_PROPERTY_MEM(QQuickOpenGLShaderEffectMaterial, textureProviders);
-#endif
 #endif
 #endif
 }
